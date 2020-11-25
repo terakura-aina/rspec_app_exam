@@ -8,8 +8,6 @@ RSpec.describe 'Task', type: :system do
     context '正常系' do
       it '一覧ページにアクセスした場合、Taskが表示されること' do
         # TODO: ローカル変数ではなく let を使用してください
-        project
-        task
         visit project_tasks_path(project)
         expect(page).to have_content task.title
         expect(Task.count).to eq 1
@@ -18,8 +16,6 @@ RSpec.describe 'Task', type: :system do
 
       it 'Project詳細からTask一覧ページにアクセスした場合、Taskが表示されること' do
         # FIXME: テストが失敗するので修正してください
-        project
-        task
         visit project_path(project)
         click_link 'View Todos'
         switch_to_window(windows.last)
@@ -34,7 +30,6 @@ RSpec.describe 'Task', type: :system do
     context '正常系' do
       it 'Taskが新規作成されること' do
         # TODO: ローカル変数ではなく let を使用してください
-        project
         visit project_tasks_path(project)
         click_link 'New Task'
         fill_in 'Title', with: 'test'
@@ -50,8 +45,6 @@ RSpec.describe 'Task', type: :system do
     context '正常系' do
       it 'Taskが表示されること' do
         # TODO: ローカル変数ではなく let を使用してください
-        project
-        task
         visit project_task_path(project, task)
         expect(page).to have_content(task.title)
         expect(page).to have_content(task.status)
@@ -64,12 +57,9 @@ RSpec.describe 'Task', type: :system do
   describe 'Task編集' do
     context '正常系' do
       let(:task_done) { create(:task, :done, project_id: project.id) }
-      include ApplicationHelper
 
       it 'Taskを編集した場合、一覧画面で編集後の内容が表示されること' do
         # FIXME: テストが失敗するので修正してください
-        project
-        task
         visit edit_project_task_path(project, task)
         fill_in 'Deadline', with: Time.current
         click_button 'Update Task'
@@ -80,8 +70,6 @@ RSpec.describe 'Task', type: :system do
 
       it 'ステータスを完了にした場合、Taskの完了日に今日の日付が登録されること' do
         # TODO: ローカル変数ではなく let を使用してください
-        project
-        task
         visit edit_project_task_path(project, task)
         select 'done', from: 'Status'
         click_button 'Update Task'
@@ -92,8 +80,6 @@ RSpec.describe 'Task', type: :system do
 
       it '既にステータスが完了のタスクのステータスを変更した場合、Taskの完了日が更新されないこと' do
         # TODO: FactoryBotのtraitを利用してください
-        project
-        task_done
         visit edit_project_task_path(project, task)
         select 'todo', from: 'Status'
         click_button 'Update Task'
@@ -108,7 +94,6 @@ RSpec.describe 'Task', type: :system do
     context '正常系' do
       # FIXME: テストが失敗するので修正してください
       it 'Taskが削除されること' do
-        project
         task
         visit project_tasks_path(project)
         click_link 'Destroy'
